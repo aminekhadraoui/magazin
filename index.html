@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POP! Magazine</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --pop-pink: #ff3f8e;
+            --cyber-blue: #00f3ff;
+            --neon-green: #39ff14;
+            --main-bg: #0a0a0a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--main-bg);
+            font-family: 'Bebas Neue', cursive;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .magazine-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            perspective: 1000px;
+        }
+
+        .dynamic-header {
+            text-align: center;
+            margin: 4rem 0;
+            position: relative;
+        }
+
+        .pop-title {
+            font-size: 6rem;
+            text-transform: uppercase;
+            background: linear-gradient(45deg, var(--pop-pink), var(--cyber-blue));
+            -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+            animation: titleGlitch 2s infinite;
+        }
+
+        .title-word-swap {
+            display: inline-block;
+            position: relative;
+            width: 300px;
+            height: 80px;
+        }
+
+        .swapping-word {
+            position: absolute;
+            left: 0;
+            opacity: 0;
+            animation: wordSwap 6s infinite;
+        }
+
+        .featured-article {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 5rem;
+            transform-style: preserve-3d;
+        }
+
+        .featured-image {
+            position: relative;
+            border: 3px solid var(--pop-pink);
+            border-radius: 20px;
+            overflow: hidden;
+            transform: rotateY(-5deg) rotateX(3deg);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .featured-image:hover {
+            transform: rotateY(0) rotateX(0) scale(1.05);
+        }
+
+        .featured-image img {
+            width: 100%;
+            height: 600px;
+            object-fit: cover;
+            filter: grayscale(80%);
+            transition: filter 0.3s;
+        }
+
+        .featured-image:hover img {
+            filter: grayscale(0);
+        }
+
+        .article-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .article-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .article-card:hover {
+            transform: translateY(-10px) rotateX(5deg) rotateY(-5deg);
+            background: rgba(255,255,255,0.15);
+        }
+
+        .article-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255,255,255,0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .article-card:hover::before {
+            left: 100%;
+        }
+
+        .pop-tag {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: var(--pop-pink);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            transform: rotate(15deg);
+            animation: tagFloat 2s ease-in-out infinite;
+        }
+
+        @keyframes titleGlitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+        @keyframes wordSwap {
+            0% { opacity: 0; transform: translateY(20px); }
+            20% { opacity: 1; transform: translateY(0); }
+            33% { opacity: 1; transform: translateY(0); }
+            53% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 0; transform: translateY(-20px); }
+        }
+
+        @keyframes tagFloat {
+            0%, 100% { transform: rotate(15deg) translateY(0); }
+            50% { transform: rotate(15deg) translateY(-10px); }
+        }
+
+        .cyber-border {
+            position: relative;
+            padding: 2rem;
+        }
+
+        .cyber-border::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 2px solid;
+            border-image: linear-gradient(45deg, var(--pop-pink), var(--cyber-blue)) 1;
+            animation: borderPulse 2s infinite;
+        }
+
+        @keyframes borderPulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+
+        .holographic-sticker {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(45deg, var(--pop-pink), var(--cyber-blue));
+            padding: 1rem 2rem;
+            border-radius: 15px;
+            transform: rotate(-15deg);
+            animation: stickerFloat 3s ease-in-out infinite;
+            cursor: pointer;
+        }
+
+        @keyframes stickerFloat {
+            0%, 100% { transform: rotate(-15deg) translateY(0); }
+            50% { transform: rotate(-15deg) translateY(-20px); }
+        }
+
+        .parallax-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 50% 50%, 
+                rgba(255, 63, 142, 0.1) 0%, 
+                rgba(0, 243, 255, 0.05) 50%, 
+                rgba(10, 10, 10, 1) 100%);
+            animation: bgScan 10s linear infinite;
+        }
+
+        @keyframes bgScan {
+            0% { background-size: 100% 100%; }
+            50% { background-size: 150% 150%; }
+            100% { background-size: 100% 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="parallax-bg"></div>
+    
+    <div class="magazine-container">
+        <div class="dynamic-header">
+            <h1 class="pop-title">POP! 
+                <div class="title-word-swap">
+                    <span class="swapping-word" style="animation-delay: 0s">DESIGN</span>
+                    <span class="swapping-word" style="animation-delay: 2s">TECH</span>
+                    <span class="swapping-word" style="animation-delay: 4s">FASHION</span>
+                </div>
+                MAGAZINE
+            </h1>
+        </div>
+
+        <div class="featured-article cyber-border">
+            <div class="featured-image">
+                <div class="pop-tag">EXCLUSIVE</div>
+                <img src="https://source.unsplash.com/random/800x600/?fashion" alt="Featured">
+            </div>
+            <div class="featured-content">
+                <h2>The Future of Wearable Tech</h2>
+                <p>Discover how fashion merges with cutting-edge technology...</p>
+            </div>
+        </div>
+
+        <div class="article-grid">
+            <div class="article-card">
+                <div class="pop-tag">NEW</div>
+                <h3>Cyberpunk Aesthetics</h3>
+                <p>Exploring the neon-drenched world of future design</p>
+            </div>
+            <!-- Add more article cards... -->
+        </div>
+
+        <div class="holographic-sticker">
+            <i class="fas fa-download"></i> Download Latest Issue!
+        </div>
+    </div>
+
+    <script>
+        // Dynamic word swap
+        const words = document.querySelectorAll('.swapping-word');
+        words.forEach((word, index) => {
+            word.style.animation = `wordSwap 6s infinite ${index * 2}s`;
+        });
+
+        // Parallax effect
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            document.querySelector('.featured-image').style.transform = 
+                `rotateY(-5deg) rotateX(${scrolled * 0.05}deg) scale(1.0${scrolled * 0.0001})`;
+        });
+
+        // Hover effect for cards
+        document.querySelectorAll('.article-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                card.style.transform = `
+                    perspective(1000px)
+                    rotateX(${(y - rect.height/2) / 10}deg)
+                    rotateY(${-(x - rect.width/2) / 10}deg)
+                    translateY(-10px)
+                `;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Random glitch effect
+        setInterval(() => {
+            document.querySelector('.pop-title').style.transform = 
+                `translate(${Math.random() * 4 - 2}px, ${Math.random() * 4 - 2}px)`;
+        }, 100);
+    </script>
+</body>
+</html>
